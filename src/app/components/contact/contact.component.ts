@@ -38,7 +38,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
             </a>
           </div>
 
-          <form class="contact__form card" [formGroup]="form" (ngSubmit)="submit()" appReveal="80">
+          <form class="contact__form card" [formGroup]="form" (ngSubmit)="submit()" (focusin)="contact.warmUp()" appReveal="80">
             @switch (status()) {
               @case ('sent') {
                 <div class="panel" data-state="sent">
@@ -184,7 +184,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
 })
 export class ContactComponent {
   private fb = inject(FormBuilder);
-  private contact = inject(ContactService);
+  protected contact = inject(ContactService);
 
   data = PORTFOLIO.profile;
   status = signal<Status>('idle');
