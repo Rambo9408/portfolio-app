@@ -1,0 +1,199 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 7rem 0 4rem;
+  overflow: hidden;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 1.4rem;
+}
+.hero__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  animation: pulse 2.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero__name {
+  font-family: var(--heading-font);
+  font-size: clamp(2.3rem, 6vw, 4rem);
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--heading);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.9rem;
+}
+.hero__hi {
+  display: block;
+  font-size: 0.42em;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 0;
+  margin-bottom: 0.4rem;
+}
+
+.hero__title {
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: 0.35rem;
+}
+
+.hero__tagline {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  margin-bottom: 1.6rem;
+}
+
+.hero__summary {
+  max-width: 46ch;
+  color: var(--text);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.hero__socials {
+  display: flex;
+  gap: 0.75rem;
+}
+.hero__socials a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--surface);
+  transition: transform 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.hero__socials a:hover {
+  color: var(--accent-2);
+  border-color: var(--accent-2);
+  transform: translateY(-3px);
+}
+
+/* ---------- Terminal card ---------- */
+.hero__aside { position: relative; }
+
+.terminal {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--term-border);
+  background: var(--term-bg);
+  box-shadow: var(--shadow);
+}
+.terminal__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--term-bar);
+  border-bottom: 1px solid var(--term-border);
+}
+.terminal__bar span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.terminal__bar span:nth-child(1) { background: #ff5f56; }
+.terminal__bar span:nth-child(2) { background: #ffbd2e; }
+.terminal__bar span:nth-child(3) { background: #27c93f; }
+.terminal__bar em {
+  margin-left: auto;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--term-chrome);
+}
+.terminal__body {
+  margin: 0;
+  padding: 1.2rem 1.3rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--term-text);
+  white-space: pre-wrap;
+  /* Hold the full height from the start so the typewriter doesn't reflow the page. */
+  min-height: 19.5em;
+}
+.terminal__line { display: inline; }
+
+.c-text { color: var(--term-text); }
+.c-prompt { color: var(--term-prompt); }
+.c-out { color: var(--term-out); }
+.c-str { color: var(--term-str); }
+.c-key { color: var(--term-key); }
+
+.cursor {
+  color: var(--term-cursor);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+}
+
+/* Scroll cue */
+.hero__scroll {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 42px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  display: grid;
+  justify-items: center;
+  padding-top: 7px;
+}
+.hero__scroll span {
+  width: 4px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--accent-2);
+  animation: scroll 1.6s infinite;
+}
+@keyframes scroll {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+
+@media (max-width: 860px) {
+  .hero__inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero__aside { max-width: 460px; }
+  .hero__scroll { display: none; }
+}
