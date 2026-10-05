@@ -1,18 +1,15 @@
 import { Component, signal } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
+import { SectionHeaderComponent } from '../../shared/section-header.component';
 
 @Component({
   selector: 'app-projects',
-  imports: [RevealDirective],
+  imports: [RevealDirective, SectionHeaderComponent],
   template: `
     <section id="projects" class="section section--alt">
       <div class="container">
-        <div class="section-head" appReveal>
-          <span class="section-kicker">04 — Projects</span>
-          <h2 class="section-title">Things I've built</h2>
-          <p>Selected work from production platforms to cross-platform apps.</p>
-        </div>
+        <app-section-header section="projects" />
 
         <div class="projects">
           @for (p of projects; track p.name; let i = $index) {
@@ -41,7 +38,7 @@ import { RevealDirective } from '../../directives/reveal.directive';
                   type="button"
                   (click)="toggle(p.name)"
                   [attr.aria-expanded]="open() === p.name"
-                  aria-controls="case-study"
+                  [attr.aria-controls]="open() === p.name ? 'case-study' : null"
                 >
                   {{ open() === p.name ? 'Hide case study' : 'Read the case study' }}
                   <svg

@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnDestroy, afterNextRender, computed, signal } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
 
 /** Milliseconds per character. Newlines pause a little longer. */
 const CHAR_MS = 18;
@@ -12,7 +12,7 @@ const LINE_PAUSE_MS = 190;
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
 })
-export class HeroComponent implements OnInit, OnDestroy {
+export class HeroComponent implements OnDestroy {
   data = PORTFOLIO.profile;
   lines = PORTFOLIO.terminal;
 
@@ -20,16 +20,39 @@ export class HeroComponent implements OnInit, OnDestroy {
   private revealed = signal(0);
   private timer?: ReturnType<typeof setTimeout>;
 
-  /** Total characters across every line (newline between lines counts as one). */
-  private readonly total = this.lines.reduce(
-    (sum, line) => sum + line.segments.reduce((s, seg) => s + seg.t.length, 0) + 1,
-    0
-  );
+  /**
+   * Character offsets, computed once: where each line starts, where each segment
+   * starts, and which indices are line breaks (a newline counts as one character).
+   */
+  private readonly lineStart: number[] = [];
+  private readonly segStart: number[][] = [];
+  private readonly lineBreaks = new Set<number>();
+  private readonly total: number;
+
+  constructor() {
+    let cursor = 0;
+    for (const line of this.lines) {
+      this.lineStart.push(cursor);
+      this.segStart.push(
+        line.segments.map((seg) => {
+          const start = cursor;
+          cursor += seg.t.length;
+          return start;
+        })
+      );
+      cursor += 1; // the newline
+      this.lineBreaks.add(cursor);
+    }
+    this.total = cursor;
+
+    // Browser only: pre-rendering ships an empty terminal, and typing starts once hydrated.
+    afterNextRender(() => this.start());
+  }
 
   /** True once the whole thing is typed — used to park the cursor at the end. */
   readonly done = computed(() => this.revealed() >= this.total);
 
-  ngOnInit(): void {
+  private start(): void {
     const reduced =
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,19 +75,8 @@ export class HeroComponent implements OnInit, OnDestroy {
     this.revealed.set(next);
 
     // Pause a beat at line breaks so it reads like someone typing.
-    const atLineBreak = this.isLineBreak(next);
+    const atLineBreak = this.lineBreaks.has(next);
     this.timer = setTimeout(() => this.tick(), atLineBreak ? LINE_PAUSE_MS : CHAR_MS);
-  }
-
-  /** Character index `n` lands on the newline that terminates a line. */
-  private isLineBreak(n: number): boolean {
-    let cursor = 0;
-    for (const line of this.lines) {
-      cursor += line.segments.reduce((s, seg) => s + seg.t.length, 0) + 1;
-      if (cursor === n) return true;
-      if (cursor > n) return false;
-    }
-    return false;
   }
 
   /**
@@ -73,29 +85,13 @@ export class HeroComponent implements OnInit, OnDestroy {
    */
   visible(lineIndex: number, segIndex: number): string {
     const seg = this.lines[lineIndex].segments[segIndex];
-
-    // Characters consumed by all earlier lines (+1 each for their newline).
-    let before = 0;
-    for (let i = 0; i < lineIndex; i++) {
-      before += this.lines[i].segments.reduce((s, x) => s + x.t.length, 0) + 1;
-    }
-    // ...plus earlier segments on this line.
-    for (let j = 0; j < segIndex; j++) {
-      before += this.lines[lineIndex].segments[j].t.length;
-    }
-
-    const remaining = this.revealed() - before;
+    const remaining = this.revealed() - this.segStart[lineIndex][segIndex];
     if (remaining <= 0) return '';
-    if (remaining >= seg.t.length) return seg.t;
-    return seg.t.slice(0, remaining);
+    return remaining >= seg.t.length ? seg.t : seg.t.slice(0, remaining);
   }
 
   /** A line only renders once the typewriter has reached it. */
   lineStarted(lineIndex: number): boolean {
-    let before = 0;
-    for (let i = 0; i < lineIndex; i++) {
-      before += this.lines[i].segments.reduce((s, x) => s + x.t.length, 0) + 1;
-    }
-    return this.revealed() > before;
+    return this.revealed() > this.lineStart[lineIndex];
   }
 }

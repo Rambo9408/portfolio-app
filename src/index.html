@@ -25,6 +25,8 @@
       } catch (e) { /* storage unavailable — keep the dark default */ }
     })();
   </script>
+  <!-- Without JS nothing would ever scroll-reveal, so show the pre-rendered content as-is. -->
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body>
   <app-root></app-root>

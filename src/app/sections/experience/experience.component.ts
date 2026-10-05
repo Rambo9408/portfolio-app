@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
+import { SectionHeaderComponent } from '../../shared/section-header.component';
 
 @Component({
   selector: 'app-experience',
-  imports: [RevealDirective],
+  imports: [RevealDirective, SectionHeaderComponent],
   template: `
     <section id="experience" class="section">
       <div class="container">
-        <div class="section-head" appReveal>
-          <span class="section-kicker">03 — Experience</span>
-          <h2 class="section-title">Where I've worked</h2>
-        </div>
+        <app-section-header section="experience" />
 
         <div class="timeline">
           @for (job of experience; track job.company) {

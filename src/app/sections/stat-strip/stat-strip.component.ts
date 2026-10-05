@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
 
 @Component({
   selector: 'app-stat-strip',

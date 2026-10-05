@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
+import { SectionHeaderComponent } from '../../shared/section-header.component';
 
 @Component({
   selector: 'app-education',
-  imports: [RevealDirective],
+  imports: [RevealDirective, SectionHeaderComponent],
   template: `
     <section id="education" class="section">
       <div class="container">
-        <div class="section-head" appReveal>
-          <span class="section-kicker">05 — Education</span>
-          <h2 class="section-title">Academic background</h2>
-        </div>
+        <app-section-header section="education" />
 
         <div class="edu">
           @for (e of education; track e.institution; let i = $index) {

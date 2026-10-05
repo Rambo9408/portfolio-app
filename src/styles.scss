@@ -77,6 +77,7 @@ a {
   --chip-border: transparent;
   --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   --card-shadow: 0 0 0 1px var(--border);
+  --danger: #f87171;
 
   /* Terminal card — GitHub-dark palette */
   --term-bg: #0d1117;
@@ -113,6 +114,7 @@ a {
   --chip-border: var(--border);
   --shadow: 0 20px 50px rgba(17, 20, 24, 0.08);
   --card-shadow: 0 1px 3px rgba(17, 20, 24, 0.06), 0 10px 30px rgba(17, 20, 24, 0.05);
+  --danger: #dc2626;
 
   /* Terminal card — light-terminal palette (still reads as a shell, not a broken card).
      Ink is darkened so every token clears contrast on a near-white chrome. */

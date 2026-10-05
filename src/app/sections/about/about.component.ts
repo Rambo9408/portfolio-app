@@ -1,17 +1,15 @@
 import { Component, signal } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
+import { RevealDirective } from '../../shared/reveal.directive';
+import { SectionHeaderComponent } from '../../shared/section-header.component';
 
 @Component({
   selector: 'app-about',
-  imports: [RevealDirective],
+  imports: [RevealDirective, SectionHeaderComponent],
   template: `
     <section id="about" class="section">
       <div class="container">
-        <div class="section-head" appReveal>
-          <span class="section-kicker">01 — About</span>
-          <h2 class="section-title">A bit about me</h2>
-        </div>
+        <app-section-header section="about" />
 
         <div class="about" appReveal="80">
           <div class="about__intro">

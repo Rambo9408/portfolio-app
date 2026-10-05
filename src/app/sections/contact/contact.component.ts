@@ -1,22 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { RevealDirective } from '../../directives/reveal.directive';
-import { ContactService } from '../../services/contact.service';
+import { RevealDirective } from '../../shared/reveal.directive';
+import { SectionHeaderComponent } from '../../shared/section-header.component';
+import { ContactService } from '../../core/contact.service';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, RevealDirective],
+  imports: [ReactiveFormsModule, RevealDirective, SectionHeaderComponent],
   template: `
     <section id="contact" class="section section--alt">
       <div class="container">
-        <div class="section-head" appReveal>
-          <span class="section-kicker">06 — Contact</span>
-          <h2 class="section-title">Let's work together</h2>
-          <p>Have a role or project in mind? I'd love to hear about it.</p>
-        </div>
+        <app-section-header section="contact" />
 
         <div class="contact">
           <div class="contact__info" appReveal>
@@ -24,7 +21,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
               <span class="contact__ico">✉</span>
               <span><small>Email</small>{{ data.email }}</span>
             </a>
-            <a class="contact__row" [href]="'tel:' + data.phone.replace(' ', '')">
+            <a class="contact__row" [href]="telHref">
               <span class="contact__ico">☎</span>
               <span><small>Phone</small>{{ data.phone }}</span>
             </a>
@@ -151,7 +148,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
         border-color: var(--accent);
         box-shadow: 0 0 0 3px var(--accent-soft);
       }
-      .err { color: #ef4444; font-size: 0.78rem; }
+      .err { color: var(--danger); font-size: 0.78rem; }
 
       .btn--primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
@@ -173,7 +170,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
         margin-bottom: 0.5rem;
       }
       .panel__icon--ok { color: var(--accent-contrast); background: var(--accent); }
-      .panel__icon--err { color: #fff; background: #ef4444; }
+      .panel__icon--err { color: var(--bg); background: var(--danger); }
       .panel h3 { color: var(--heading); font-family: var(--heading-font); }
       .panel p { color: var(--text-dim); font-size: 0.9rem; max-width: 38ch; }
       .panel__mail { color: var(--accent); font-weight: 600; text-decoration: underline; }
@@ -187,6 +184,8 @@ export class ContactComponent {
   protected contact = inject(ContactService);
 
   data = PORTFOLIO.profile;
+  /** tel: links must not contain spaces — strip all of them, not just the first. */
+  telHref = 'tel:' + this.data.phone.replace(/\s+/g, '');
   status = signal<Status>('idle');
 
   form = this.fb.group({

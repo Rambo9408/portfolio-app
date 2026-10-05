@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, timeout } from 'rxjs';
-import { FORMSPREE_ENDPOINT } from '../config/site.config';
+import { FORMSPREE_ENDPOINT } from './site.config';
 
 export interface ContactPayload {
   name: string;

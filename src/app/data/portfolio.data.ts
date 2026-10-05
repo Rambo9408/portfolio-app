@@ -86,6 +86,45 @@ export interface PortfolioData {
   education: EducationItem[];
 }
 
+/**
+ * The page's numbered sections, in page order. The nav links and every
+ * "NN — Label" kicker are derived from this list, so reordering or renaming
+ * a section is a one-line change here (plus moving its tag in app.html).
+ */
+export const SECTIONS = [
+  { id: 'about', label: 'About', title: 'A bit about me' },
+  {
+    id: 'skills',
+    label: 'Skills',
+    title: 'Technologies I work with',
+    intro: 'A full-stack toolkit spanning frontend, backend, data, testing and DevOps.',
+  },
+  { id: 'experience', label: 'Experience', title: "Where I've worked" },
+  {
+    id: 'projects',
+    label: 'Projects',
+    title: "Things I've built",
+    intro: 'Selected work from production platforms to cross-platform apps.',
+  },
+  { id: 'education', label: 'Education', title: 'Academic background' },
+  {
+    id: 'contact',
+    label: 'Contact',
+    title: "Let's work together",
+    intro: "Have a role or project in mind? I'd love to hear about it.",
+  },
+] as const satisfies readonly SectionMeta[];
+
+export interface SectionMeta {
+  id: string;
+  /** Used for the nav link and the kicker. */
+  label: string;
+  title: string;
+  intro?: string;
+}
+
+export type SectionId = (typeof SECTIONS)[number]['id'];
+
 export const PORTFOLIO: PortfolioData = {
   profile: {
     name: 'Ram Kumar Mishra',
