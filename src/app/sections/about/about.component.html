@@ -1,0 +1,40 @@
+<section id="about" class="section">
+  <div class="container">
+    <app-section-header section="about" />
+
+    <div class="about" appReveal="80">
+      <div class="about__intro">
+        @if (data.photo && !photoFailed()) {
+          <img
+            class="about__photo"
+            [src]="data.photo"
+            [alt]="data.name"
+            (error)="photoFailed.set(true)"
+          />
+        } @else {
+          <div class="about__badge">{{ data.initials }}</div>
+        }
+        <p class="about__lead">{{ data.summary }}</p>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__pt">
+          <b>Secure by design</b>
+          <span>JWT, RBAC &amp; CSRF across 10+ production modules.</span>
+        </div>
+        <div class="about__pt">
+          <b>Performance minded</b>
+          <span>Caching &amp; query tuning cut API response times 20–25%.</span>
+        </div>
+        <div class="about__pt">
+          <b>Quality driven</b>
+          <span>Playwright E2E slashed regression effort 60–70%.</span>
+        </div>
+        <div class="about__pt">
+          <b>Ships reliably</b>
+          <span>Dockerized apps with CI/CD for consistent releases.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

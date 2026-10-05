@@ -1,0 +1,17 @@
+<section id="education" class="section">
+  <div class="container">
+    <app-section-header section="education" />
+
+    <div class="edu">
+      @for (e of education; track e.institution; let i = $index) {
+        <article class="edu__item card" [appReveal]="i * 70">
+          <span class="edu__year">{{ e.period }}</span>
+          <div>
+            <h3 class="edu__degree">{{ e.degree }}</h3>
+            <p class="edu__inst">{{ e.institution }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

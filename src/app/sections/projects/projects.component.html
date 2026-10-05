@@ -1,0 +1,89 @@
+<section id="projects" class="section section--alt">
+  <div class="container">
+    <app-section-header section="projects" />
+
+    <div class="projects">
+      @for (p of projects; track p.name; let i = $index) {
+        <article class="proj card" [appReveal]="i * 80">
+          <div class="proj__top">
+            <div class="proj__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 7h16M4 7l1.5 12a2 2 0 0 0 2 1.8h9a2 2 0 0 0 2-1.8L20 7M9 7V5a3 3 0 0 1 6 0v2" />
+              </svg>
+            </div>
+            @if (p.highlight) {
+              <span class="proj__badge">{{ p.highlight }}</span>
+            }
+          </div>
+          <h3 class="proj__name">{{ p.name }}</h3>
+          <p class="proj__desc">{{ p.description }}</p>
+          <div class="proj__tech">
+            @for (t of p.tech; track t) {
+              <span class="chip">{{ t }}</span>
+            }
+          </div>
+
+          @if (p.caseStudy) {
+            <button
+              class="proj__cta"
+              type="button"
+              (click)="toggle(p.name)"
+              [attr.aria-expanded]="open() === p.name"
+              [attr.aria-controls]="open() === p.name ? 'case-study' : null"
+            >
+              {{ open() === p.name ? 'Hide case study' : 'Read the case study' }}
+              <svg
+                class="proj__chev"
+                [class.up]="open() === p.name"
+                width="15" height="15" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2.2"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+          }
+        </article>
+      }
+    </div>
+
+    @if (active(); as cs) {
+      <div class="case card" id="case-study" appReveal>
+        <header class="case__head">
+          <div>
+            <span class="case__kicker">Case study</span>
+            <h3 class="case__title">{{ open() }}</h3>
+          </div>
+          <button class="case__close" type="button" (click)="open.set(null)" aria-label="Close case study">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </header>
+
+        <p class="case__summary">{{ cs.summary }}</p>
+
+        <div class="case__grid">
+          @for (c of cs.cards; track c.decision; let i = $index) {
+            <article class="dc">
+              <span class="dc__num">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+              <h4 class="dc__decision">{{ c.decision }}</h4>
+
+              <div class="dc__row">
+                <span class="dc__label">Why</span>
+                <p>{{ c.why }}</p>
+              </div>
+              <div class="dc__row">
+                <span class="dc__label dc__label--trade">Trade-off</span>
+                <p>{{ c.tradeoff }}</p>
+              </div>
+              <div class="dc__row">
+                <span class="dc__label dc__label--result">Result</span>
+                <p>{{ c.result }}</p>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

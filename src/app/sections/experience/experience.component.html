@@ -1,0 +1,27 @@
+<section id="experience" class="section">
+  <div class="container">
+    <app-section-header section="experience" />
+
+    <div class="timeline">
+      @for (job of experience; track job.company) {
+        <article class="tl" appReveal="60">
+          <span class="tl__dot"></span>
+          <div class="tl__card card">
+            <header class="tl__head">
+              <div>
+                <h3 class="tl__role">{{ job.role }}</h3>
+                <p class="tl__company">{{ job.company }}</p>
+              </div>
+              <span class="tl__period">{{ job.period }}</span>
+            </header>
+            <ul class="tl__list">
+              @for (b of job.bullets; track b) {
+                <li>{{ b }}</li>
+              }
+            </ul>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

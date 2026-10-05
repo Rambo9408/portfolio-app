@@ -1,0 +1,13 @@
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="footer__name">{{ data.name }}</span>
+    <p class="footer__note">
+      Built with Angular · Designed &amp; developed by {{ data.firstName }}
+    </p>
+    <div class="footer__links">
+      <a [href]="data.githubUrl" target="_blank" rel="noopener">GitHub</a>
+      <a [href]="data.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
+      <a [href]="'mailto:' + data.email">Email</a>
+    </div>
+  </div>
+</footer>

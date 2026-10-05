@@ -1,0 +1,85 @@
+<section id="contact" class="section section--alt">
+  <div class="container">
+    <app-section-header section="contact" />
+
+    <div class="contact">
+      <div class="contact__info" appReveal>
+        <a class="contact__row" [href]="'mailto:' + data.email">
+          <span class="contact__ico">✉</span>
+          <span><small>Email</small>{{ data.email }}</span>
+        </a>
+        <a class="contact__row" [href]="telHref">
+          <span class="contact__ico">☎</span>
+          <span><small>Phone</small>{{ data.phone }}</span>
+        </a>
+        <a class="contact__row" [href]="data.githubUrl" target="_blank" rel="noopener">
+          <span class="contact__ico">⌘</span>
+          <span><small>GitHub</small>{{ data.github }}</span>
+        </a>
+        <a class="contact__row" [href]="data.linkedinUrl" target="_blank" rel="noopener">
+          <span class="contact__ico">in</span>
+          <span><small>LinkedIn</small>{{ data.linkedin }}</span>
+        </a>
+      </div>
+
+      <form class="contact__form card" [formGroup]="form" (ngSubmit)="submit()" (focusin)="contact.warmUp()" appReveal="80">
+        @switch (status()) {
+          @case ('sent') {
+            <div class="panel" data-state="sent">
+              <div class="panel__icon panel__icon--ok">✓</div>
+              <h3>Message sent</h3>
+              <p>Thanks for reaching out — I'll get back to you at the email you gave me.</p>
+              <button type="button" class="btn btn--ghost" (click)="reset()">Send another</button>
+            </div>
+          }
+
+          @case ('error') {
+            <!-- Never claim success we didn't get. Give them a path that actually works. -->
+            <div class="panel" data-state="error">
+              <div class="panel__icon panel__icon--err">!</div>
+              <h3>Couldn't send your message</h3>
+              <p>
+                Something went wrong on the way. Please email me directly at
+                <a class="panel__mail" [href]="'mailto:' + data.email">{{ data.email }}</a>
+              </p>
+              <button type="button" class="btn btn--ghost" (click)="retry()">Try again</button>
+            </div>
+          }
+
+          @default {
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" type="text" formControlName="name" placeholder="Your name" />
+              @if (invalid('name')) { <small class="err">Please enter your name.</small> }
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" formControlName="email" placeholder="you@example.com" />
+              @if (invalid('email')) { <small class="err">Enter a valid email.</small> }
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" rows="4" formControlName="message" placeholder="Tell me about it…"></textarea>
+              @if (invalid('message')) { <small class="err">Message is a little short.</small> }
+            </div>
+
+            <!-- Honeypot: humans never see or tab to this; bots fill it in.
+                 '_gotcha' is Formspree's own honeypot name, so it's dropped server-side too. -->
+            <input
+              class="gotcha"
+              type="text"
+              formControlName="_gotcha"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+
+            <button type="submit" class="btn btn--primary" [disabled]="status() === 'sending'">
+              {{ status() === 'sending' ? 'Sending…' : 'Send Message' }}
+            </button>
+          }
+        }
+      </form>
+    </div>
+  </div>
+</section>

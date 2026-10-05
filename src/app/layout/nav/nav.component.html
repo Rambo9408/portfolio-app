@@ -1,0 +1,31 @@
+<header class="nav" [class.nav--scrolled]="scrolled()">
+  <div class="container nav__inner">
+    <a href="#home" class="nav__brand">
+      <span class="nav__mark">{{ data.initials }}</span>
+      <span class="nav__brandtext">{{ data.firstName }}<b>.</b></span>
+    </a>
+
+    <nav id="nav-links" class="nav__links" [class.open]="menu()">
+      @for (link of links; track link.id) {
+        <a [href]="'#' + link.id" (click)="menu.set(false)">{{ link.label }}</a>
+      }
+      <a [href]="data.resumeUrl" download class="nav__resume">Resume</a>
+    </nav>
+
+    <div class="nav__actions">
+      <!-- Pre-rendered as dark; a returning light-mode visitor gets a different
+           icon, so this one component is rendered fresh instead of hydrated. -->
+      <app-theme-toggle ngSkipHydration />
+      <button
+        class="nav__burger"
+        type="button"
+        (click)="menu.set(!menu())"
+        [attr.aria-label]="menu() ? 'Close menu' : 'Open menu'"
+        [attr.aria-expanded]="menu()"
+        aria-controls="nav-links"
+      >
+        <span [class.x]="menu()"></span>
+      </button>
+    </div>
+  </div>
+</header>

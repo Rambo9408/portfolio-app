@@ -1,0 +1,18 @@
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.1rem;
+}
+.skills__group { padding: 1.4rem 1.5rem; transition: transform 0.2s ease, border-color 0.2s ease; }
+.skills__group:hover { transform: translateY(-4px); border-color: var(--accent); }
+.skills__label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--heading-font);
+  font-size: 1.05rem;
+  color: var(--heading);
+  margin-bottom: 1rem;
+}
+.skills__num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); }
+.skills__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
